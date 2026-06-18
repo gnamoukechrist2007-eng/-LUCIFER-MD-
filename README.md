@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/badge/ISURUWA-WA--BOT-brightgreen?style=for-the-badge&logo=appveyor">
+<img src="https://img.shields.io/badge/★LUCIFER-MD★-brightgreen?style=for-the-badge&logo=appveyor">
 
 ```
 ----- LOGS -----
@@ -10,7 +10,7 @@
 <p align="center">
 <img src="https://www.commbox.io/wp-content/uploads/2020/01/168-1.jpg">
 <p align="center">
-<a href="https://github.com/isuruwa"><img title="addon" src="https://img.shields.io/badge/isuruwa-WA--BOT-blueviolet?style=for-the-badge&logo=appveyor"></a>
+<a href="https://github.com/gnamoukechrist"><img title="addon" src="https://img.shields.io/badge/isuruwa-WA--BOT-blueviolet?style=for-the-badge&logo=appveyor"></a>
 <p align="center">
 <img align="center" alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=isuruwawabot" />
 <br>
@@ -19,7 +19,7 @@
 <br>
 <p align="left">
 
-<img src="https://img.shields.io/badge/isuruwa-ABOUT%20TOOL-blueviolet?style=for-the-badge&logo=appveyor">  
+<img src="https://img.shields.io/badge/★LUCIFER-MD★-ABOUT%20TOOL-blueviolet?style=for-the-badge&logo=appveyor">  
 
 ## ABOUT TOOL :  <img src="https://img.icons8.com/cute-clipart/50/000000/double-tick.png">
   
