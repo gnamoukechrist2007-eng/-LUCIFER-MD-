@@ -33,8 +33,6 @@ function kyun(seconds) {
   var hours = Math.floor(seconds / (60 * 60));
   var minutes = Math.floor(seconds % (60 * 60) / 60);
   var seconds = Math.floor(seconds % 60);
-
-  //return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
   return `${pad(hours)} Hours ${pad(minutes)} Minutes ${pad(seconds)} Seconds`
 }
 
@@ -42,18 +40,52 @@ async function starts() {
   const client = new WAConnection()
   client.logger.level = 'warn'
   console.log(banner.string)
-  client.on('qr', () => {
-    console.log(color('[', 'white'), color('!', 'red'), color(']', 'white'), color(' Scan the qr code above'))
-  })
 
+  // =============================================
+  // 📱 AJOUTE TON NUMÉRO ICI (sans le +)
+  // Exemple : pour +225 07 12 34 56 78, écris "2250712345678"
+  // =============================================
+  const myNumber = "2250150559431"
+  // =============================================
+
+  // Charger l'authentification si elle existe
   fs.existsSync('./BarBar.json') && client.loadAuthInfo('./BarBar.json')
+
   client.on('connecting', () => {
     start('2', 'Connecting...')
   })
+
   client.on('open', () => {
     success('2', 'Connected')
   })
-  await client.connect({ timeoutMs: 30 * 1000 })
+
+  // Écouter l'événement du pairing code
+  client.on('pairing-code', (code) => {
+    console.log('\n')
+    console.log(color('=========================================', 'yellow'))
+    console.log(color('🔐 CODE DE PAIREMENT', 'green'))
+    console.log(color('=========================================', 'yellow'))
+    console.log(color(`   📱 ${code}   `, 'cyan'))
+    console.log(color('=========================================', 'yellow'))
+    console.log(color('📌 Va dans WhatsApp → Appareils liés → Lier avec un numéro de téléphone', 'white'))
+    console.log(color(`📌 Entre ce code : ${code}`, 'white'))
+    console.log(color('=========================================', 'yellow'))
+    console.log('\n')
+  })
+
+  // 🔐 CONNEXION AVEC PAIRING CODE (au lieu du QR code)
+  await client.connect({
+    timeoutMs: 30 * 1000,
+    printQR: false,        // Désactive le QR code
+    phoneNumber: myNumber, // Ton numéro
+    pairingCode: true      // Active le pairing code
+  })
+
+  // Si la connexion est réussie
+  console.log(color('\n✅ CONNECTÉ AVEC SUCCÈS !', 'green'))
+  console.log(color(`📱 Bot connecté pour le numéro : ${myNumber}`, 'yellow'))
+
+  // Sauvegarder l'authentification
   fs.writeFileSync('./BarBar.json', JSON.stringify(client.base64EncodedAuthInfo(), null, '\t'))
 
   client.on('group-participants-update', async (anu) => {
@@ -133,7 +165,7 @@ async function starts() {
       }
 
       const botNumber = client.user.jid
-      const ownerNumber = ["94xxxxxxxx@s.whatsapp.net"] // replace this with your number
+      const ownerNumber = ["94xxxxxxxx@s.whatsapp.net"]
       const isGroup = from.endsWith('@g.us')
       const sender = isGroup ? mek.participant : mek.key.remoteJid
       const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
@@ -174,7 +206,6 @@ async function starts() {
         case 'menu':
           client.sendMessage(from, help(prefix), text)
           break
-        //\n*Total Block Contact* : ${blocked.length}
         case 'info':
           me = client.user
           uptime = process.uptime()
@@ -183,7 +214,7 @@ async function starts() {
           client.sendMessage(from, buffer, image, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
           break
         case 'blocklist':
-          if (!isOwner) return reply(Only.For.BotOwner)
+          if (!isOwner) return reply('Only for Bot Owner')
           teks = 'This is list of blocked number :\n'
           for (let block of blocked) {
             teks += `~> @${block.split('@')[0]}\n`
@@ -192,7 +223,7 @@ async function starts() {
           client.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": blocked } })
           break
         case 'closegc':
-          anker.updatePresence(from, Presence.composing)
+          client.updatePresence(from, Presence.composing)
           if (!isGroup) return reply(mess.only.group)
           if (!isGroupAdmins) return reply(mess.only.admin)
           if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -201,11 +232,11 @@ async function starts() {
             text: `Group closed admin @${nomor.split("@s.whatsapp.net")[0]}\now *only admin* can send messages`,
             contextInfo: { mentionedJid: [nomor] }
           }
-          anker.groupSettingChange(from, GroupSettingChange.messageSend, true);
+          client.groupSettingChange(from, GroupSettingChange.messageSend, true);
           reply(close)
           break
         case 'opengc':
-          anker.updatePresence(from, Presence.composing)
+          client.updatePresence(from, Presence.composing)
           if (!isGroup) return reply(mess.only.group)
           if (!isGroupAdmins) return reply(mess.only.admin)
           if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -213,8 +244,8 @@ async function starts() {
             text: `Group opened By admin @${sender.split("@")[0]}\now *all participants* can send messages`,
             contextInfo: { mentionedJid: [sender] }
           }
-          anker.groupSettingChange(from, GroupSettingChange.messageSend, false)
-          anker.sendMessage(from, open, text, { quoted: mek })
+          client.groupSettingChange(from, GroupSettingChange.messageSend, false)
+          client.sendMessage(from, open, text, { quoted: mek })
           break
         case 'ocr':
           if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
@@ -503,9 +534,6 @@ async function starts() {
           linkgc = await client.groupInviteCode(from)
           reply('https://chat.whatsapp.com/' + linkgc)
           break
-        case 'info':
-          reply(mess.only.aboutbot)
-          break
         case 'toimg':
           if (!isQuotedSticker) return reply('❌ Reply a sticker ❌')
           reply(mess.wait)
@@ -560,7 +588,7 @@ async function starts() {
             console.log(muehe)
             reply(muehe)
           } else {
-            return //console.log(color('[WARN]','red'), 'Unregistered Command from', color(sender.split('@')[0]))
+            return
           }
       }
     } catch (e) {
