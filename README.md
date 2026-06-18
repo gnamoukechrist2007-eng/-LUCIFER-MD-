@@ -10,9 +10,9 @@
 <p align="center">
 <img src="https://www.commbox.io/wp-content/uploads/2020/01/168-1.jpg">
 <p align="center">
-<a href="https://github.com/gnamoukechrist"><img title="addon" src="https://img.shields.io/badge/isuruwa-WA--BOT-blueviolet?style=for-the-badge&logo=appveyor"></a>
+<a href="https://github.com/gnamoukechrist"><img title="addon" src="https://img.shields.io/badge/★LUCIFER-MD★-blueviolet?style=for-the-badge&logo=appveyor"></a>
 <p align="center">
-<img align="center" alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=isuruwawabot" />
+<img align="center" alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=★LUCIFER-MD" />
 <br>
 <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fisuruwa&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
 </p>
